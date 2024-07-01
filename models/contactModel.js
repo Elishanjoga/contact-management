@@ -17,5 +17,5 @@ const contactSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
-module.exports = mongoose.model("Contact", contactSchema);
+const contacts = mongoose.model("Contact", contactSchema);
+module.exports = contacts;

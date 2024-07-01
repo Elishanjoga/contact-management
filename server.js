@@ -8,5 +8,4 @@ connectDb();
 app.use(express.json());
 app.use("/api/contacts", require("./routes/contactRoute"));
 app.use(error_handler);
-
 app.listen(port);
