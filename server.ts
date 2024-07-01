@@ -1,13 +1,32 @@
-const express = require("express");
-const error_handler = require("./middleware/errorHandler");
-const connectDb = require("./configs/dbConnection");
-const os = require("http");
+// import connectDb from "./src/configs/dbConnection";
+import { config } from "dotenv";
+import errorHandler from "./src/middleware/errorHandler";
+import express from "express";
+import router from "./src/routes/contactRoute";
 const app = express();
-const dotenv = require("dotenv").config();
-const port = process.env.PORT || 2000;
-// connectDb();
+
+// Load environment variables
+config();
+
+const port = parseInt(process.env.PORT || "2000", 10); // Ensure port is a number
+
+// Connect to database (assuming asynchronous connection)
+// connectDb()
+//   .then(() => {
+//     console.log("Database connected");
+//   })
+//   .catch((err) => {
+//     console.error("Error connecting to database:", err);
+
+//   });
 
 app.use(express.json());
-app.use("/api/contacts", require("./routes/contactRoute"));
-app.use(error_handler);
-app.listen(port, console.log("We are listening on port", port));
+
+// Mount contact routes (assuming contactRoute is a TS module)
+app.use("/api/contacts", router);
+
+app.use(errorHandler);
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
