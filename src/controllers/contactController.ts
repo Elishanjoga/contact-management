@@ -1,11 +1,14 @@
-const asyncHandler = require("express-async-handler");
-const Contact = require("../models/contactModel");
-const run = require("../configs/dbConnection");
+import Contact from "../models/contactModel"; // Assuming 'Contact' model is imported from 'contact.model.ts'
+import asyncHandler from "express-async-handler"; // Assuming 'express-async-handler' is used for middleware
+// import {run} from '../configs/dbConnection';
+// const asyncHandler = require("express-async-handler");
+// const Contact = require("../models/contactModel");
+// const run = require("../configs/dbConnection");
 
 // @desc get all contacts
 // @route GET /api/contacts
 //@accesss public
-const getContacts = asyncHandler(async (req, res) => {
+const getContacts = asyncHandler(async (req: any, res: any) => {
   const contacts = await Contact.find();
   res.status(200).json(contacts);
 });
@@ -13,7 +16,7 @@ const getContacts = asyncHandler(async (req, res) => {
 // @desc get one contact
 // @route GET /api/contacts/:id
 //@accesss public
-const getContact = asyncHandler(async (req, res) => {
+const getContact = asyncHandler(async (req: any, res: any) => {
   const contact = await Contact.findById(req.params.id);
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
@@ -23,7 +26,7 @@ const getContact = asyncHandler(async (req, res) => {
 // @desc create contacts
 // @route POST /api/contacts
 //@accesss public
-const createContact = asyncHandler(async (req, res) => {
+const createContact = asyncHandler(async (req: any, res: any) => {
   // console.log(req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
@@ -41,14 +44,14 @@ const createContact = asyncHandler(async (req, res) => {
 // @desc update contacts
 // @route PUT /api/contacts/:id
 //@accesss public
-const updateContact = asyncHandler(async (req, res) =>
+const updateContact = asyncHandler(async (req: any, res: any) =>
   res.status(201).json({ message: `Elisha test ${req.params.id}` })
 );
 
 // @desc delete contacts
 // @route DELETE /api/contacts/:id
 //@accesss public
-const deleteContact = asyncHandler(async (req, res) =>
+const deleteContact = asyncHandler(async (req: any, res: any) =>
   res.status(201).json({ message: `Elisha test ${req.params.id}` })
 );
 
