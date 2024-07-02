@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import Contact from "../models/contactModel"; // Assuming 'Contact' model is imported from 'contact.model.ts'
+import { User } from "../models/contactModel";
 import asyncHandler from "express-async-handler"; // Assuming 'express-async-handler' is used for middleware
 
 // Interface for Contact data (assuming you have a Contact interface)
@@ -18,7 +18,7 @@ interface Contact {
 // @access Public
 export const getContacts = asyncHandler(
   async (req: Request, res: Response<Contact[]>) => {
-    const contacts = await Contact.find();
+    const contacts = await User.findAll();
     res.status(200).json(contacts);
   }
 );
@@ -27,7 +27,7 @@ export const getContacts = asyncHandler(
 // @route GET /api/contacts/:id
 // @access Public
 export const getContact = asyncHandler(async (req: any, res: any) => {
-  const contact = await Contact.findById(req.params.id);
+  const contact = await User.findByPk(req.params.id);
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
   }
@@ -39,12 +39,12 @@ export const getContact = asyncHandler(async (req: any, res: any) => {
 // @access Public
 export const createContact = asyncHandler(
   async (req: Request, res: Response<Contact>) => {
-    const { name, email, phone } = req.body;
-    if (!name || !email || !phone) {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
       res.status(400);
       throw new Error("Please provide complete details.");
     }
-    const contact = await Contact.create({ name, email, phone });
+    const contact = await User.create({ username, email, password });
     res.status(201).json(contact);
   }
 );
@@ -55,16 +55,12 @@ export const createContact = asyncHandler(
 export const updateContact = asyncHandler(async (req: any, res: any) => {
   const { name, email, phone } = req.body;
 
-  const contact = await Contact.findByIdAndUpdate(
-    req.params.id,
-    { name, email, phone },
-    { new: true }
-  );
+  const contact = await User.findByPk(req.params.id);
 
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
   }
-
+  contact.update(name, email, phone);
   res.status(200).json(contact);
 });
 
@@ -72,9 +68,10 @@ export const updateContact = asyncHandler(async (req: any, res: any) => {
 // @route DELETE /api/contacts/:id
 // @access Public (replace with appropriate access control logic)
 export const deleteContact = asyncHandler(async (req: any, res: any) => {
-  const contact = await Contact.findByIdAndDelete(req.params.id);
+  const contact = await User.findByPk(req.params.id);
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
   }
+  await contact.destroy();
   res.status(200).json({ message: "Contact deleted" });
 });

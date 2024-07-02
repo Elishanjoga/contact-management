@@ -1,32 +1,34 @@
-import mongoose from "mongoose"; // Import mongoose from 'mongoose' package
+// models/User.js
+import { DataType, DataTypes } from "sequelize";
 
-// Define the contact schema using an interface
-interface Contact {
-  name: string;
-  email: string;
-  phone: string;
-  createdAt: Date;
-}
+import { sequelize } from "../configs/dbConnection";
+import { v4 as uuidv4 } from "uuid";
 
-const contactSchema = new mongoose.Schema<Contact>({
-  name: {
-    type: String,
-    required: [true, "please provide a valid name"],
+export const User = sequelize.define(
+  "User",
+  {
+    // Define attributes
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "please provide a valid email"],
-  },
-  phone: {
-    type: String,
-    required: [true, "please provide a valid phone number"],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-const contacts = mongoose.model<Contact>("Contact", contactSchema);
-
-export default contacts;
+  {
+    // Other model options
+    timestamps: true,
+    freezeTableName: true,
+  }
+);

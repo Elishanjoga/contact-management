@@ -1,20 +1,24 @@
-// const mongoose = require("mongoose");
-// const uri =
-//   "mongodb+srv://njogaelisha:Admin%402024@cluster0.zfj7mga.mongodb.net/contacts-db?retryWrites=true&w=majority";
+import { Sequelize } from "sequelize";
 
-// const connectDb = async () => {
-//   try {
-//     const connect = await mongoose.connect(uri);
-//     console.log(
-//       "database connection established",
-//       connect.connection.host,
-//       connect.connection.name
-//     );
-//   } catch (error) {
-//     // Ensures that the client will close when you finish/error
-//     console.log(error);
-//     process.exit(1);
-//   }
+export const sequelize = new Sequelize("playground", "elisha", "Okello@900", {
+  host: "localhost",
+  dialect: "postgres",
+});
+
+// export const dbConfig: { [key: string]: DatabaseConfig } = {
+//
+//   test: {
+//     username: "elisha",
+//     password: "Okello@900",
+//     database: "playground",
+//     host: "localhost",
+//     dialect: "postgres",
+//   },
+//   production: {
+//     username: "elisha",
+//     password: "Okello@900",
+//     database: "playground",
+//     host: "localhost",
+//     dialect: "postgres",
+//   },
 // };
-
-// module.exports = connectDb;
